@@ -104,5 +104,6 @@ qiime krona collapse-and-plot \
 --i-taxonomy /classified_rep-seqs_wSILVA_taxonomy.qza \
 --o-krona-plot krona.qzv
 ```
-[taxonomy_order.pdf](https://github.com/user-attachments/files/23143755/taxonomy_order.pdf)
+
+<img width="1400" height="1262" alt="taxonomy_order-1" src="https://github.com/user-attachments/assets/b2e68bef-2f73-46f2-b711-57d952ae6552" />
 
