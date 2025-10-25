@@ -106,4 +106,5 @@ qiime krona collapse-and-plot \
 ```
 
 <img width="1400" height="1262" alt="taxonomy_order-1" src="https://github.com/user-attachments/assets/b2e68bef-2f73-46f2-b711-57d952ae6552" />
+<img width="1088" height="1245" alt="Screenshot 2025-10-25 at 10 35 10 AM" src="https://github.com/user-attachments/assets/15b10b7b-1010-4333-bdf0-324b029dc996" />
 
