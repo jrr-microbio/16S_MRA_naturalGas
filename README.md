@@ -88,17 +88,17 @@ qiime tools export \
 ###############
 
 qiime feature-classifier classify-sklearn \
-  --i-classifier /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza \
+  --i-classifier SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza \
   --i-reads rep-seqs-dada2.qza \
-  --o-classification /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/taxonomic_classification/classified_rep-seqs_wSILVA_taxonomy.qza
+  --o-classification classified_rep-seqs_wSILVA_taxonomy.qza
 
 qiime tools export \
---input-path /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/taxonomic_classification/classified_rep-seqs_wSILVA_taxonomy.qza \
+--input-path classified_rep-seqs_wSILVA_taxonomy.qza \
 --output-path exported_taxonomy
 
 
 qiime krona collapse-and-plot \
 --i-table table-dada2.qza \
---i-taxonomy /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/taxonomic_classification/classified_rep-seqs_wSILVA_taxonomy.qza \
+--i-taxonomy /classified_rep-seqs_wSILVA_taxonomy.qza \
 --o-krona-plot krona.qzv
 ```
