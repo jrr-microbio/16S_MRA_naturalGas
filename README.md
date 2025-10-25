@@ -87,6 +87,8 @@ qiime tools export \
 ###############
 ###############
 
+#Can be downloaded from: https://www.arb-silva.de/current-release/QIIME2/2025.7/SSU/full-length/uniform
+
 qiime feature-classifier classify-sklearn \
   --i-classifier SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza \
   --i-reads rep-seqs-dada2.qza \
