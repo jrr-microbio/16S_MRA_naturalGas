@@ -5,3 +5,96 @@ The role of this repository is to store the QIIME2 code used for the publication
 
 ## Abstract
 Environmental gene profiling can provide valuable insights into low biomass microbial communities inhabiting subsurface environments. To access the prokaryotic diversity of an active natural gas storage field, 16S rRNA gene sequencing was performed on formation water to provide insights into the taxonomic composition of microbial groups potentially capable of metabolizing stored fuel gases in the geologic reservoir. 
+
+#Install qiime2
+mamba env create \
+  --name qiime2-amplicon-2025.7 \
+  --file https://raw.githubusercontent.com/qiime2/distributions/refs/heads/dev/2025.7/amplicon/released/qiime2-amplicon-ubuntu-latest-conda.yml
+
+mamba activate qiime2-amplicon-2025.7
+
+###################
+###################
+  #Let's try this with paired end reads
+###################
+###################
+
+#Import manifest with reads
+  qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path ./_ASV_16S_manifest.csv \
+  --output-path ./paired-end-demux.qza \
+  --input-format PairedEndFastqManifestPhred33
+
+#Visualize quality
+  qiime demux summarize \
+  --i-data paired-end-demux.qza \
+  --o-visualization demux.qzv
+
+#cutadapt is being weird here...but i know the primers so lets just dada2 with the length of the primers.
+#qiime cutadapt trim-paired \
+#  --i-demultiplexed-sequences paired-end-demux.qza \
+#  --p-cores 1 \
+#  --p-adapter-f GTGYCAGCMGCCGCGGTAA \ #19bp
+#  --p-adapter-r GGACTACNVGGGTWTCTAAT \ #20bp
+#  --o-trimmed-sequences trimmed-sequences.qza
+
+#Visualize quality after primer removal
+#  qiime demux summarize \
+#  --i-data trimmed-sequences.qza \
+#  --o-visualization demux_trimmed.qzv
+
+#Trim and denoise - use method consensus. Using chimera method consensus based on this: https://forum.qiime2.org/t/dada2-chimera-filtering-and-beyond/8685/2
+
+qiime dada2 denoise-paired \
+--i-demultiplexed-seqs paired-end-demux.qza \
+--p-trim-left-f 19 \
+--p-trim-left-r 20 \
+--p-trunc-len-f 0 \
+--p-trunc-len-r 0 \
+--p-n-threads 10 \
+--p-trunc-q 2 \
+--p-chimera-method consensus \
+--o-representative-sequences rep-seqs-dada2.qza \
+--o-table table-dada2.qza \
+--o-denoising-stats stats-dada2.qza
+
+#Now look at how denoising changed results.
+  qiime metadata tabulate \
+  --m-input-file stats-dada2.qza \
+  --o-visualization stats-dada2.qzv
+
+#Export the otu table.
+  qiime tools export \
+  --input-path table-dada2.qza \
+  --output-path exported-feature-table
+
+#Convert biom to tsv.
+biom convert --to-tsv -i ./exported-feature-table/feature-table.biom -o final_ASV_table.tsv
+
+qiime tools export \
+  --input-path rep-seqs-dada2.qza \
+  --output-path exported-rep-seqs
+
+###############
+###############
+###############
+# Now let's classify with SILVA - i already have a trained classifier so just running it.
+###############
+###############
+###############
+
+qiime feature-classifier classify-sklearn \
+  --i-classifier /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/SILVA138.2_SSURef_NR99_uniform_classifier_full-length.qza \
+  --i-reads rep-seqs-dada2.qza \
+  --o-classification /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/taxonomic_classification/classified_rep-seqs_wSILVA_taxonomy.qza
+
+qiime tools export \
+--input-path /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/taxonomic_classification/classified_rep-seqs_wSILVA_taxonomy.qza \
+--output-path exported_taxonomy
+
+
+qiime krona collapse-and-plot \
+--i-table table-dada2.qza \
+--i-taxonomy /home/rodr771/BagwellOpportunistic/bagwell_october_2024/qiime2/taxonomic_classification/classified_rep-seqs_wSILVA_taxonomy.qza \
+--o-krona-plot krona.qzv
