@@ -1,9 +1,10 @@
-## 
+<img width="468" height="61" alt="image" src="https://github.com/user-attachments/assets/843848e5-89dc-431c-ad8e-2699bcc33190" />## 
 
-QIIME2 Repository: Natural Gas Reservoir
+QIIME2 Repository: Geologic Storage Facility
 ------------
 
-The role of this repository is to store the QIIME2 code used for the publication titled: Prokaryotic Community Profiling from Pore Fluids Collected from a Natural Gas Reservoir
+The role of this repository is to store the QIIME2 code used for the publication titled: Prokaryotic Community Profiling from Pore Fluids Collected from a Geological Storage Facility
+
 
 ## Abstract
 Environmental gene profiling can provide valuable insights into low biomass microbial communities inhabiting subsurface environments. To access the prokaryotic diversity of an active natural gas storage field, 16S rRNA gene sequencing was performed on formation water to provide insights into the taxonomic composition of microbial groups potentially capable of metabolizing stored fuel gases in the geologic reservoir. 
