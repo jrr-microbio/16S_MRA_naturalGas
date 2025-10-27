@@ -1,5 +1,3 @@
-<img width="468" height="61" alt="image" src="https://github.com/user-attachments/assets/843848e5-89dc-431c-ad8e-2699bcc33190" />## 
-
 QIIME2 Repository: Geologic Storage Facility
 ------------
 
